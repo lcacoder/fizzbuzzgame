@@ -1,0 +1,50 @@
+{/* {gameEnded && (
+        <div>
+          <h2>Game Over</h2>
+          <p>Correct Answers: {score.correct}</p>
+          <p>Incorrect Answers: {score.incorrect}</p>
+        </div>
+      )} */}
+
+      {/*  */}
+      {/* <GameStatus timeLeft={timeLeft} score={score} onTimeUp={onTimeUp} /> */}
+      {/* <div>
+        <p>Current Number: {currentNumber}</p>
+        <input
+          type="text"
+          value={userAnswer}
+          onChange={(e) => setUserAnswer(e.target.value)}
+          disabled={gameEnded}
+        />
+        <button onClick={handleSubmit}>Submit Answer</button>
+      </div> */}
+
+        // const onTimeUp = () => {
+  //   setGameEnded(true);
+  //   setGameStarted(false);
+  // };
+  const gameRulesWithoutEscapes = rules.map(rule => rule.replace(/\\"/g, '"'));
+  const submitInfo = async () => {
+    if (!author.trim() || !gameName.trim() || !range.trim() || isNaN(parseInt(range, 10))) {
+      alert('Please fill in all fields and enter a valid range.');
+      return;
+    }const [author, setAuthor] = useState('');
+    const [gameName, setGameName] = useState('');
+    const [range, setRange] = useState('');
+    const [timeLeft, setTimeLeft] = useState(60); // Game duration
+    // const [score, setScore] = useState({ correct: 0, incorrect: 0 });
+    // const [currentNumber, setCurrentNumber] = useState<number | null>(null);
+    // const [userAnswer, setUserAnswer] = useState('');
+    const [gameStarted, setGameStarted] = useState(false);
+    // const [gameEnded, setGameEnded] = useState(false);
+    // const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set());
+    const [timeLeft, setTimeLeft] = useState(60);
+
+    useEffect(() => {
+        if (gameStarted && timeLeft > 0) {
+          const timer = setInterval(() => {
+            setTimeLeft((prevTime) => prevTime - 1);
+          }, 1000);
+          return () => clearInterval(timer);
+        }
+      }, [gameStarted, timeLeft]);
