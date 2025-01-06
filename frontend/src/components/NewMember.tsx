@@ -89,7 +89,7 @@ const NewMember = () => {
             score: correctAnswer,
           };
         try {
-            const response = await fetch("https://localhost:5019/api/game/saveGame", {
+            const response = await fetch("https://localhost:5019/api/game/savegame", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

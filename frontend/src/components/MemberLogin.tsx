@@ -14,7 +14,7 @@ const LoginPage = () => {
         }
 
         try {
-            const response = await fetch('https://localhost:5019/api/game/verifyMember', {
+            const response = await fetch('https://localhost:5019/api/game/verifymember', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

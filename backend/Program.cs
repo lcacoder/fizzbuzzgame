@@ -32,6 +32,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<GameRuleService>();
 
 var app = builder.Build();

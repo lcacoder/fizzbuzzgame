@@ -23,7 +23,7 @@ namespace backend.Controllers
             _gameRuleService = gameRuleService;
         }
 
-        [HttpPost("saveGame")]
+        [HttpPost("savegame")]
         public async Task<IActionResult> SaveGame([FromBody]History history)
         {
             if (history.GameName == null)
@@ -43,7 +43,7 @@ namespace backend.Controllers
             }
         }
 
-        [HttpPost("verifyMember")]
+        [HttpPost("verifymember")]
         public IActionResult VerifyMember([FromBody] string authorName)
         {
             Console.WriteLine(authorName);
@@ -103,7 +103,7 @@ namespace backend.Controllers
             }
         }
 
-        [HttpGet("getAllGamesByAuthor")]
+        [HttpGet("getallgames")]
         public IActionResult GetAllGamesByAuthor(string author)
         {
             var games = _context.Histories.Where(g => g.Author == author).ToList();
