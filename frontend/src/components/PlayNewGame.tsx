@@ -118,12 +118,9 @@ const PlayNewGame = () => {
             </div>
             <div className="bg-light p-5 rounded shadow-sm">
                 <div className="mb-4">
-                    <h3 className="mb-4  fw-bold">
-                        Your New Game Setup:
+                    <h3 className="mb-4 text-center fw-bold">
+                        Your New Game Setup
                     </h3>
-                    <label className="mb-4  fw-bold">Game Name: {gameName || 'N/A'}</label>
-                    <br></br>
-                    <label className="mb-4  fw-bold">Value Range: {range || 'N/A'}</label>
                     <GameRules />
                 </div>
                 <div className="mb-4">
