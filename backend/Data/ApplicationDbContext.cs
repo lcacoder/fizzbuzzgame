@@ -11,8 +11,8 @@ namespace backend.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-    public DbSet<Game> Games { get; set; }
-    public DbSet<History> Histories { get; set; }
+    public virtual DbSet<Game> Games { get; set; }
+    public virtual DbSet<History> Histories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

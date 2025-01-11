@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5019:5019" # Map HTTP port
+      - "7005:7005" # Map HTTPS port
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

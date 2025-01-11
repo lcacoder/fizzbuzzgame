@@ -18,7 +18,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Jest Support */
+    "types": ["node", "jest"] 
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "**/*.test.ts", "**/*.test.tsx"]
 }

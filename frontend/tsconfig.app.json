@@ -20,7 +20,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Jest Support */
+    "types": ["node", "jest"]
   },
-  "include": ["src"]
+  "include": ["src", "**/*.test.ts", "**/*.test.tsx"]
 }

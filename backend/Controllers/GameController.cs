@@ -23,19 +23,23 @@ namespace backend.Controllers
             _gameRuleService = gameRuleService;
         }
 
-        [HttpPost("savegame")]
-        public async Task<IActionResult> SaveGame([FromBody]History history)
+        [HttpPost("creategame")]
+        public async Task<IActionResult> CreateGame([FromBody]Game game)
         {
-            if (history.GameName == null)
+            if (game.Range == 0)
             {
                 return BadRequest("Invalid game data.");
             }
             try
             {
-                Console.WriteLine(history.Author + " " + history.GameName + " " + history.Score);
-                // _context.Histories.Add(history);
+                if (game.GameRules != null)
+                {
+                    // Optionally, you can check if the GameRules are correctly parsed
+                    var rulesList = game.GetGameRules();
+                }
+                // _context.Games.Add(game);
                 // await _context.SaveChangesAsync();
-                return Ok(new { message = "Game saved successfully!" });;
+                return Ok(new { message = "Game created successfully!" });;
             }
             catch (Exception ex)
             {
@@ -79,29 +83,26 @@ namespace backend.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateGame([FromBody]Game game)
+        [HttpPost("savegame")]
+        public async Task<IActionResult> SaveGame([FromBody]History history)
         {
-            if (game.Range == 0)
+            if (history.GameName == null)
             {
                 return BadRequest("Invalid game data.");
             }
             try
             {
-                if (game.GameRules != null)
-                {
-                    // Optionally, you can check if the GameRules are correctly parsed
-                    var rulesList = game.GetGameRules();
-                }
-                // _context.Games.Add(game);
+                Console.WriteLine(history.Author + " " + history.GameName + " " + history.Score);
+                // _context.Histories.Add(history);
                 // await _context.SaveChangesAsync();
-                return Ok(new { message = "Game created successfully!" });;
+                return Ok(new { message = "Game saved successfully!" });;
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
         [HttpGet("getallgames")]
         public IActionResult GetAllGamesByAuthor(string author)

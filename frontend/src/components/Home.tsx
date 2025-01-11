@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Index.css';
 
-const HomePage = () => {
+const Home = () => {
     const navigate = useNavigate();
 
     return (
@@ -51,4 +51,4 @@ const HomePage = () => {
     );
 };
 
-export default HomePage;
+export default Home;

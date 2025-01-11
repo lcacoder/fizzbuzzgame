@@ -7,7 +7,7 @@ namespace backend.Services
 {
     public class GameRuleService
     {
-        public string ApplyGameRules(int number)
+        public virtual string ApplyGameRules(int number)
         {
             string result = "";
 
