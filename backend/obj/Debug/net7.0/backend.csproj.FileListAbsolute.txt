@@ -1,13 +1,5 @@
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/appsettings.Development.json
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/appsettings.json
-/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/bin/Debug/net7.0/appsettings.Development.json
-/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/bin/Debug/net7.0/appsettings.json
-/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/bin/Debug/net7.0/backend.deps.json
-/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/bin/Debug/net7.0/backend.runtimeconfig.json
-/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/bin/Debug/net7.0/GameControllerTests.deps.json
-/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/bin/Debug/net7.0/GameControllerTests.runtimeconfig.json
-/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/bin/Debug/net7.0/GameControllerTests/obj/GameControllerTests.csproj.nuget.dgspec.json
-/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/bin/Debug/net7.0/GameControllerTests/obj/project.assets.json
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/obj/GameControllerTests.csproj.nuget.dgspec.json
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/GameControllerTests/obj/project.assets.json
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/backend
