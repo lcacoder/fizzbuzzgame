@@ -55,7 +55,7 @@ namespace backend.Controllers
             {
                 return BadRequest(new { message = "Author name is required." });
             }
-
+            Console.WriteLine(authorName);
             bool userExists = _context.Games.Any(g => g.Author == authorName);
             if (!userExists)
             {
@@ -92,7 +92,7 @@ namespace backend.Controllers
             }
             try
             {
-                Console.WriteLine(history.Author + " " + history.GameName + " " + history.Score);
+                // Console.WriteLine(history.Author + " " + history.GameName + " " + history.Score);
                 // _context.Histories.Add(history);
                 // await _context.SaveChangesAsync();
                 return Ok(new { message = "Game saved successfully!" });;

@@ -42,6 +42,8 @@
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/Microsoft.Win32.SystemEvents.dll
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/Mono.TextTemplating.dll
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/Moq.dll
+/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/Newtonsoft.Json.dll
+/Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/NuGet.Frameworks.dll
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/leechou/Desktop/Practice/FizzBuzzApp/backend/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll
