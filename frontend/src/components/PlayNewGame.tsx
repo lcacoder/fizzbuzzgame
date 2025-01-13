@@ -22,6 +22,7 @@ const PlayNewGame = () => {
     const [answer, setAnswer] = useState('');
     const [correctAnswer, setCorrectAnswer] = useState(0);
     const alertShownRef = useRef(false);
+    const apiUrl = import.meta.env.VITE_API_URL;
     
     useEffect(() => {
         const interval = setInterval(() => {
@@ -58,7 +59,7 @@ const PlayNewGame = () => {
         }
 
         try {
-            const response = await fetch("https://localhost:5019/api/game/validate", {
+            const response = await fetch("https://localhost:5020/api/game/validate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -89,7 +90,7 @@ const PlayNewGame = () => {
             score: correctAnswer,
           };
         try {
-            const response = await fetch("https://localhost:5019/api/game/saveGame", {
+            const response = await fetch(`${apiUrl}/game/saveGame`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

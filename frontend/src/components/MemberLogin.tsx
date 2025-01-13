@@ -6,7 +6,7 @@ import '../Index.css';
 const LoginPage = () => {
     const navigate = useNavigate();
     const [author, setAuthor] = useState("");
-
+    const apiUrl = import.meta.env.VITE_API_URL;
     const verifyUser = async () => {
         if (!author.trim()) {
             alert("Please enter your name before click on login")
@@ -14,7 +14,7 @@ const LoginPage = () => {
         }
 
         try {
-            const response = await fetch('https://localhost:5019/api/game/verifymember', {
+            const response = await fetch(`${apiUrl}/game/verifymember`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -16,7 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5019, listenOptions =>
+    options.ListenLocalhost(5020, listenOptions =>
     {
         listenOptions.UseHttps("localhost.pfx", "yourpassword");
     });
@@ -27,13 +27,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
         policy.WithOrigins("http://localhost:5173") // Frontend origin
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped<GameService>();
 builder.Services.AddScoped<GameRuleService>();
 
 var app = builder.Build();

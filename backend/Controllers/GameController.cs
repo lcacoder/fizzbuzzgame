@@ -15,51 +15,39 @@ namespace backend.Controllers
     [Route("api/[controller]")]
     public class GameController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly GameService _gameService;
         private readonly GameRuleService _gameRuleService;
-        public GameController(ApplicationDbContext context, GameRuleService gameRuleService)
+
+        public GameController(GameService gameService, GameRuleService gameRuleService)
         {
-            _context = context;
+            _gameService = gameService;
             _gameRuleService = gameRuleService;
         }
 
         [HttpPost("creategame")]
-        public async Task<IActionResult> CreateGame([FromBody]Game game)
+        public async Task<IActionResult> CreateGame([FromBody] Game game)
         {
-            if (game.Range == 0)
+            var result = await _gameService.CreateGameAsync(game);
+            if (result == "Game created successfully!")
             {
-                return BadRequest("Invalid game data.");
+                return Ok(new { message = result });
             }
-            try
-            {
-                if (game.GameRules != null)
-                {
-                    // Optionally, you can check if the GameRules are correctly parsed
-                    var rulesList = game.GetGameRules();
-                }
-                // _context.Games.Add(game);
-                // await _context.SaveChangesAsync();
-                return Ok(new { message = "Game created successfully!" });;
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+
+            return BadRequest(new { message = result });
         }
 
         [HttpPost("verifymember")]
         public IActionResult VerifyMember([FromBody] string authorName)
         {
-            Console.WriteLine(authorName);
             if (string.IsNullOrWhiteSpace(authorName))
             {
                 return BadRequest(new { message = "Author name is required." });
             }
-            Console.WriteLine(authorName);
-            bool userExists = _context.Games.Any(g => g.Author == authorName);
+
+            bool userExists = _gameService.VerifyUser(authorName);
             if (!userExists)
             {
-                return BadRequest(new { message = "Invalid user." });
+                return NotFound(new { message = "User does not exist." }); // Changed to NotFound
             }
 
             return Ok(new { message = "User verified successfully." });
@@ -68,12 +56,12 @@ namespace backend.Controllers
         [HttpPost("validate")]
         public IActionResult ValidateAnswer([FromBody] AnswerDto answerDto)
         {
-            if (answerDto.Number <= 0 || string.IsNullOrWhiteSpace(answerDto.Answer))
+            if (answerDto == null || answerDto.Number <= 0 || string.IsNullOrWhiteSpace(answerDto.Answer)) // Added null check for answerDto
             {
                 return BadRequest(new { message = "Invalid input." });
             }
+
             string expected = _gameRuleService.ApplyGameRules(answerDto.Number);
-            // Console.WriteLine($"Expected: '{expected}', Provided Answer: '{answerDto.Answer}'");
             bool isCorrect = string.Equals(expected, answerDto.Answer, StringComparison.OrdinalIgnoreCase);
 
             return Ok(new ValidationResult
@@ -84,31 +72,33 @@ namespace backend.Controllers
         }
 
         [HttpPost("savegame")]
-        public async Task<IActionResult> SaveGame([FromBody]History history)
+        public async Task<IActionResult> SaveGame([FromBody] History history)
         {
-            if (history.GameName == null)
+            var result = await _gameService.SaveGameAsync(history);
+            if (result == "Game saved successfully!")
             {
-                return BadRequest("Invalid game data.");
+                return Ok(new { message = result });
             }
-            try
-            {
-                // Console.WriteLine(history.Author + " " + history.GameName + " " + history.Score);
-                // _context.Histories.Add(history);
-                // await _context.SaveChangesAsync();
-                return Ok(new { message = "Game saved successfully!" });;
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
 
+            return BadRequest(new { message = result });
+        }
 
         [HttpGet("getallgames")]
         public IActionResult GetAllGamesByAuthor(string author)
         {
-            var games = _context.Histories.Where(g => g.Author == author).ToList();
+            if (string.IsNullOrWhiteSpace(author)) // Added a check for an empty author parameter
+            {
+                return BadRequest(new { message = "Author name is required." });
+            }
+
+            var games = _gameService.GetAllGamesByAuthor(author);
+            if (games == null || !games.Any()) // If no games are found
+            {
+                return NotFound(new { message = "No games found for the author." }); // Changed to NotFound
+            }
+
             return Ok(games);
         }
     }
 }
+

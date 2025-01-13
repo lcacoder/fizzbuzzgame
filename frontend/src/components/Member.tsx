@@ -22,12 +22,12 @@ const Member = () => {
     const [games, setGames] = useState<Game[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    const apiUrl = import.meta.env.VITE_API_URL;
     const loadGames = async () => {
         setIsLoading(true);
         setError(null); // Clear any previous error messages
         try {
-            const response = await fetch(`https://localhost:5019/api/game/getallgames?author=${author}`);
+            const response = await fetch(`${apiUrl}game/getallgames?author=${author}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch games');
             }

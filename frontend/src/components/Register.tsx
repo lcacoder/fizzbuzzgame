@@ -10,24 +10,73 @@ const Register = () => {
   const [gameName, setGameName] = useState('');
   const [range, setRange] = useState('');
   const [timeRange, setTimeRange] = useState('');
-
   const gameRulesWithoutEscapes = rules.map(rule => rule.replace(/\\"/g, '"'));
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const [errors, setErrors] = useState({
+    author: '',
+    gameName: '',
+    range: '',
+    timeRange: ''
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      author: '',
+      gameName: '',
+      range: '',
+      timeRange: ''
+    };
+    
+    if (!author.trim()) {
+      newErrors.author = 'Author is required.';
+      isValid = false;
+    } else if (author.length > 200) {
+      newErrors.author = 'Author cannot exceed 200 characters.';
+      isValid = false;
+    }
+    
+    if (!gameName.trim()) {
+      newErrors.gameName = 'Game Name is required.';
+      isValid = false;
+    } else if (gameName.length > 200) {
+      newErrors.gameName = 'Game Name cannot exceed 200 characters.';
+      isValid = false;
+    }
+
+    if (!range.trim()) {
+      newErrors.range = 'Value Range is required.';
+      isValid = false;
+    } else if (isNaN(parseInt(range, 10))) {
+      newErrors.range = 'Please enter a valid number for Range.';
+      isValid = false;
+    } else if (parseInt(range, 10) < 1) {
+      newErrors.range = 'Range must be a positive number.';
+      isValid = false;
+    }
+
+    if (!timeRange.trim() || timeRange === '0') {
+      newErrors.timeRange = 'Duration is required and must be a positive numer.';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const submitInfo = async () => {
-    if (!author.trim() || !gameName.trim() || !range.trim() || isNaN(parseInt(range, 10))) {
-      alert('Please fill in all fields and enter a valid range.');
+    if (!validateForm()) {
       return;
     }
 
     const gameData = {
-      author: author,
-      gameName: gameName,
+      author,
+      gameName,
       gameRules: JSON.stringify(gameRulesWithoutEscapes),
       range: parseInt(range, 10),
     };
-
     try {
-      const response = await fetch("https://localhost:5019/api/game/creategame", {
+      const response = await fetch(`${apiUrl}/game/creategame`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,21 +98,18 @@ const Register = () => {
 
   return (
     <div className="container mt-5">
-      {/* Header Section */}
       <div className="mb-5 p-4 text-center" style={{ backgroundColor: '#ffc107', borderRadius: '15px' }}>
         <h1 className="display-3 fw-bold text-dark">
           Welcome To FizzBuzz Game! 🎮
         </h1>
       </div>
 
-      {/* Form Section */}
       <div className="bg-light p-5 rounded shadow-sm">
         <h3 className="mb-4 text-secondary fw-bold text-center">
           Please input your details to register and create your first game:
         </h3>
         
         <form>
-          {/* Author Input */}
           <div className="mb-4">
             <label htmlFor="author" className="form-label fw-bold">Author:</label>
             <input
@@ -74,9 +120,9 @@ const Register = () => {
               onChange={(e) => setAuthor(e.target.value)}
               placeholder="Enter your name"
             />
+            {errors.author && <div className="text-danger">{errors.author}</div>}
           </div>
 
-          {/* Game Name Input */}
           <div className="mb-4">
             <label htmlFor="gameName" className="form-label fw-bold">Game Name:</label>
             <input
@@ -87,9 +133,9 @@ const Register = () => {
               onChange={(e) => setGameName(e.target.value)}
               placeholder="Enter game name"
             />
+            {errors.gameName && <div className="text-danger">{errors.gameName}</div>}
           </div>
 
-          {/* Range Input */}
           <div className="mb-4">
             <label htmlFor="range" className="form-label fw-bold">Value Range:</label>
             <input
@@ -100,9 +146,10 @@ const Register = () => {
               onChange={(e) => setRange(e.target.value)}
               placeholder="Enter max range (e.g., 100 for 0-100)"
             />
+            {errors.range && <div className="text-danger">{errors.range}</div>}
           </div>
           <div className="mb-4">
-            <label htmlFor="range" className="form-label fw-bold">Duration:</label>
+            <label htmlFor="timeRange" className="form-label fw-bold">Duration:</label>
             <input
               type="text"
               className="form-control"
@@ -111,14 +158,13 @@ const Register = () => {
               onChange={(e) => setTimeRange(e.target.value)}
               placeholder="Enter max time duration you want"
             />
+            {errors.timeRange && <div className="text-danger">{errors.timeRange}</div>}
           </div>
 
-          {/* Game Rules Section */}
           <div className="mb-4">
             <GameRules />
           </div>
 
-          {/* Submit Button */}
           <div className="text-center">
             <button
               type="button"
