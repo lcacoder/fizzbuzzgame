@@ -29,8 +29,8 @@ namespace backend.Services
                     var rulesList = game.GetGameRules(); // Apply game rules here if necessary
                 }
 
-                // _context.Games.Add(game);
-                // await _context.SaveChangesAsync();
+                _context.Games.Add(game);
+                await _context.SaveChangesAsync();
 
                 return "Game created successfully!";
             }
@@ -56,8 +56,8 @@ namespace backend.Services
 
             try
             {
-                // _context.Histories.Add(history);
-                // await _context.SaveChangesAsync();
+                _context.Histories.Add(history);
+                await _context.SaveChangesAsync();
                 return "Game saved successfully!";
             }
             catch
