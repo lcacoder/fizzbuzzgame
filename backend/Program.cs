@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +16,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
-builder.WebHost.ConfigureKestrel(options =>
+var certificatePath = "/app/localhost.pfx";
+var certificatePassword = "yourpassword";
+var certificate = new X509Certificate2(certificatePath, certificatePassword);
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    options.ListenLocalhost(5020, listenOptions =>
+    // Configure Kestrel to listen on 5020 with HTTPS
+    serverOptions.Listen(System.Net.IPAddress.Any, 5020, listenOptions =>
     {
-        listenOptions.UseHttps("localhost.pfx", "yourpassword");
+        listenOptions.UseHttps(certificate);
     });
 });
 
@@ -44,6 +51,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 

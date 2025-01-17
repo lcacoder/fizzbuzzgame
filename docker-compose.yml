@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
     ports:
-      - "5019:5019" # Map HTTP port
+      - "5020:5020" # Map HTTP port
       - "7005:7005" # Map HTTPS port
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
