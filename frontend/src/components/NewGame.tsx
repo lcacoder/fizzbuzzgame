@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import GameRules, { rules } from './GameRules';
 import { useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../Index.css';
+import '../index.css';
 
 interface LocationState {
   author: string;

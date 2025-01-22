@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../Index.css';
+import '../index.css';
 
 const LoginPage = () => {
     const navigate = useNavigate();

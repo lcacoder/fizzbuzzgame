@@ -1,28 +1,31 @@
-# Stage 1: Build
-FROM node:18 as build
+# Use an official Node.js image as the build environment
+FROM node:18-alpine AS build
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json to install dependencies
+# Copy package.json and package-lock.json to the container
 COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the entire frontend source code into the container
+# Copy the rest of the application source code to the container
 COPY . .
 
 # Build the application
 RUN npm run build
 
-# Stage 2: Serve
-FROM nginx:alpine
+# Use an official Nginx image as the base for the production environment
+FROM nginx:stable-alpine
 
-# Copy the build output from the previous stage to Nginx's default public directory
+# Copy the built React files to the Nginx HTML directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 80 for the server
+# (Optional) Copy a custom Nginx configuration file if necessary
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose the port Nginx will listen on
 EXPOSE 80
 
 # Start Nginx

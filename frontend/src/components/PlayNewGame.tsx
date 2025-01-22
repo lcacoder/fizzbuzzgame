@@ -4,7 +4,7 @@ import GameRules, { rules } from './GameRules';
 import { useLocation } from 'react-router-dom';
 // import Register,{gameName} from './Register';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../Index.css';
+import '../index.css';
 
 interface LocationState {
     author: string;
