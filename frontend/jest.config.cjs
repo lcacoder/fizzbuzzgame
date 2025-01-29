@@ -1,12 +1,12 @@
 module.exports = {
-  setupFiles: ["<rootDir>/jest.setup.js"], // path to your setup file
   transform: {
-    "^.+\\.(ts|tsx)$": "babel-jest", // Transform TypeScript with Babel
-    "^.+\\.(js|jsx)$": "babel-jest", // Also for JS files
+    '^.+\\.tsx?$': 'ts-jest',
   },
-  testEnvironment: "jsdom", // Jest environment for testing React apps
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx"], // Ensure Jest knows about TypeScript and JavaScript files
+  testEnvironment: 'jsdom',
+  setupFiles: ['dotenv/config'], // Ensure environment variables are loaded
+  setupFilesAfterEnv: ['@testing-library/jest-dom', '<rootDir>/jest.setup.js'],
   moduleNameMapper: {
-    '\\.css$': 'identity-obj-proxy', // Mock CSS imports to prevent Jest from processing them
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
   },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 };

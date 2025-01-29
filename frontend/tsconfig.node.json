@@ -7,11 +7,13 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "node",  // Change this from 'bundler' to 'node' for Jest compatibility
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": false,  // Set to false to allow output files
+    "emitDeclarationOnly": true,  // Emit only declaration files
+    "declaration": true,  // Add this to generate .d.ts files
+    "composite": true,  // Enable composite projects for project references
 
     /* Linting */
     "strict": true,
@@ -21,7 +23,7 @@
     "noUncheckedSideEffectImports": true,
 
     /* Jest Support */
-    "types": ["node", "jest"] 
+    "types": ["node", "jest"]  // Ensure Jest types are included
   },
-  "include": ["vite.config.ts", "**/*.test.ts", "**/*.test.tsx"]
+  "include": ["vite.config.ts", "**/*.test.ts", "**/*.test.tsx"]  // Include test files
 }

@@ -1,5 +1,22 @@
 {
-  "files": [],
+  "compilerOptions": {
+    "jsx": "react-jsx",  // Ensure JSX is enabled for React
+    "esModuleInterop": true,  // Enable smooth imports
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM"],
+    "moduleResolution": "bundler",  // Use bundler mode for modules
+    "strict": true,
+    "noEmit": true,  // No output files will be emitted
+    "skipLibCheck": true,
+    "types": ["node", "jest"],  // Add Jest types for testing
+    "isolatedModules": true
+  },
+  "include": [
+    "src",               // Include the source directory
+    "**/*.test.ts",      // Include test files with .test.ts extension
+    "**/*.test.tsx"      // Include test files with .test.tsx extension
+  ],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
