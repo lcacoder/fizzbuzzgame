@@ -10,8 +10,33 @@ jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
 
+declare global {
+    var importMeta: ImportMeta;
+  }
+  
+  interface ImportMetaEnv {
+    VITE_API_URL: string;
+    BASE_URL: string;
+    MODE: string;
+    DEV: boolean;
+    PROD: boolean;
+    SSR: boolean;
+  }
+  
+  interface ImportMeta {
+    env: ImportMetaEnv;
+  }
 // Mock environment variable
-(globalThis as any).importMeta = { env: { VITE_API_URL: 'https://localhost:5020/api' } };
+globalThis.importMeta = {
+    env: {
+      VITE_API_URL: 'https://localhost:5020/api',  // Add your URL here
+      BASE_URL: '/',  // Default value for BASE_URL
+      MODE: 'development',  // Default value for MODE
+      DEV: true,  // Set DEV to true or false based on your environment
+      PROD: false,  // Set PROD to true or false based on your environment
+      SSR: false,  // Set SSR to true or false based on your environment
+    },
+  };
 
 
 describe('Register Component', () => {

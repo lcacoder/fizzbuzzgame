@@ -11,7 +11,7 @@ const Register = () => {
   const [range, setRange] = useState('');
   const [timeRange, setTimeRange] = useState('');
   const gameRulesWithoutEscapes = rules.map(rule => rule.replace(/\\"/g, '"'));
-  const apiUrl = process.env.VITE_API_URL || 'https://localhost:5020/api';
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [errors, setErrors] = useState({
     author: '',
     gameName: '',
