@@ -16,16 +16,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
-var certificatePath = "/app/localhost.pfx";
-var certificatePassword = "yourpassword";
-var certificate = new X509Certificate2(certificatePath, certificatePassword);
-
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    // Configure Kestrel to listen on 5020 with HTTPS
-    serverOptions.Listen(System.Net.IPAddress.Any, 5020, listenOptions =>
+    serverOptions.ListenAnyIP(5020, listenOptions =>
     {
-        listenOptions.UseHttps(certificate);
+        listenOptions.UseHttps(); 
     });
 });
 
@@ -42,6 +37,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<GameService>();
 builder.Services.AddScoped<GameRuleService>();
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 

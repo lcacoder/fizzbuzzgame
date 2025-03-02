@@ -29,7 +29,7 @@ namespace backend.Services
                     var rulesList = game.GetGameRules(); // Apply game rules here if necessary
                 }
 
-                _context.Games.Add(game);
+                // _context.Games.Add(game);
                 await _context.SaveChangesAsync();
 
                 return "Game created successfully!";
@@ -38,12 +38,6 @@ namespace backend.Services
             {
                 return "Internal server error.";
             }
-        }
-
-        // Verifies if a user exists by author name
-        public bool VerifyUser(string authorName)
-        {
-            return _context.Games.Any(g => g.Author == authorName);
         }
 
         // Saves game history in the database

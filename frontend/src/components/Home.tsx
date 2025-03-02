@@ -28,7 +28,7 @@ const Home = () => {
                 {/* New Player Button */}
                 <button
                     className="btn btn-success btn-lg px-5 py-3 rounded-pill shadow-sm fw-bold"
-                    onClick={() => navigate('/register')}
+                    onClick={() => navigate('/registermember')}
                     style={{ transition: 'transform 0.2s ease', fontSize: '1.2rem' }}
                     onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
                     onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}

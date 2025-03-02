@@ -17,11 +17,14 @@ namespace backend.Controllers
     {
         private readonly GameService _gameService;
         private readonly GameRuleService _gameRuleService;
+        
+        private readonly UserService _userService;
 
-        public GameController(GameService gameService, GameRuleService gameRuleService)
+        public GameController(GameService gameService, GameRuleService gameRuleService, UserService userService)
         {
             _gameService = gameService;
             _gameRuleService = gameRuleService;
+            _userService = userService;
         }
 
         [HttpPost("creategame")]
@@ -36,21 +39,32 @@ namespace backend.Controllers
             return BadRequest(new { message = result });
         }
 
-        [HttpPost("verifymember")]
-        public IActionResult VerifyMember([FromBody] string authorName)
+        [HttpPost("register")]
+        public async Task<IActionResult> AddUser([FromBody] UserDto user) 
         {
-            if (string.IsNullOrWhiteSpace(authorName))
+            var result = await _userService.AddUserAsync(user);
+            if(result == "User added successfully!")
+            {
+                return Ok(new {message = result });
+            }
+            return BadRequest(new { message = result });
+        }
+
+        [HttpPost("verifymember")]
+        public IActionResult VerifyMember([FromBody] UserDto user)
+        {
+            if (user.Author == null)
             {
                 return BadRequest(new { message = "Author name is required." });
             }
 
-            bool userExists = _gameService.VerifyUser(authorName);
+            bool userExists = _userService.VerifyUser(user);
             if (!userExists)
             {
                 return NotFound(new { message = "User does not exist." }); // Changed to NotFound
             }
 
-            return Ok(new { message = "User verified successfully." });
+            return Ok(new { message = "User verified successfully." });   
         }
 
         [HttpPost("validate")]
@@ -86,6 +100,7 @@ namespace backend.Controllers
         [HttpGet("getallgames")]
         public IActionResult GetAllGamesByAuthor(string author)
         {
+            Console.WriteLine(author);
             if (string.IsNullOrWhiteSpace(author)) // Added a check for an empty author parameter
             {
                 return BadRequest(new { message = "Author name is required." });

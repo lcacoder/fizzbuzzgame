@@ -13,6 +13,7 @@ namespace backend.Data
 
     public virtual DbSet<Game> Games { get; set; }
     public virtual DbSet<History> Histories { get; set; }
+    public virtual DbSet<UserDto> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "target": "ES2020",   // ES2020 or higher
+    "module": "ESNext",    // ESNext or higher (needed for import.meta)
+    "moduleResolution": "node",
+    "lib": ["ES2020", "DOM"],
     "jsx": "react-jsx",
     "esModuleInterop": true,
-    "target": "ES2020",
-    "module": "ESNext",
-    "lib": ["ES2020", "DOM"],
-    "moduleResolution": "bundler",
     "strict": true,
-    "noEmit": true,
+    "noEmit": true,        // Optional, depending on your setup
     "skipLibCheck": true,
     "types": ["node", "jest"],
     "isolatedModules": true
@@ -16,6 +16,9 @@
     "src",
     "**/*.test.ts",
     "**/*.test.tsx"
+  ],
+  "exclude": [
+    "node_modules"
   ],
   "references": [
     { "path": "./tsconfig.app.json" },

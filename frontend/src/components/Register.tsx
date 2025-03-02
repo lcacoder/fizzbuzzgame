@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameRules, { rules } from './GameRules';
+import { useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../index.css';
 
+interface LocationState {
+  author: string;
+}
+
 const Register = () => {
   const navigate = useNavigate();
-  const [author, setAuthor] = useState('');
+  const location = useLocation();
+  const {author} = (location.state as LocationState) || { author: ''};
   const [gameName, setGameName] = useState('');
   const [range, setRange] = useState('');
   const [timeRange, setTimeRange] = useState('');
@@ -23,6 +29,7 @@ const Register = () => {
     let isValid = true;
     const newErrors = {
       author: '',
+      password: '',
       gameName: '',
       range: '',
       timeRange: ''
@@ -110,19 +117,6 @@ const Register = () => {
         </h3>
         
         <form>
-          <div className="mb-4">
-            <label htmlFor="author" className="form-label fw-bold">Author:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              placeholder="Enter your name"
-            />
-            {errors.author && <div className="text-danger">{errors.author}</div>}
-          </div>
-
           <div className="mb-4">
             <label htmlFor="gameName" className="form-label fw-bold">Game Name:</label>
             <input

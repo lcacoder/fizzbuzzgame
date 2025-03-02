@@ -6,6 +6,7 @@ import '../index.css';
 const LoginPage = () => {
     const navigate = useNavigate();
     const [author, setAuthor] = useState("");
+    const [password, setPassword] = useState('');
     const apiUrl = import.meta.env.VITE_API_URL;
     const verifyUser = async () => {
         if (!author.trim()) {
@@ -13,13 +14,18 @@ const LoginPage = () => {
             return;
         }
 
+        const userData = {
+            author,
+            password
+          }
+
         try {
             const response = await fetch(`${apiUrl}/game/verifymember`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(author),
+                body: JSON.stringify(userData),
             });
             if (!response.ok) {
                 throw new Error('Failed to verify user');
@@ -56,6 +62,18 @@ const LoginPage = () => {
                          value={author}
                          onChange={(e) => setAuthor(e.target.value)}
                          placeholder="Enter author name"
+                        />
+                    </div>
+
+                    <div className="mb-4 mf-1">
+                        <label htmlFor="password" className="form-label fw-bold">Password:</label>
+                        <input
+                         type="text"
+                         className="form-control"
+                         id="password"
+                         value={password}
+                         onChange={(e) => setPassword(e.target.value)}
+                         placeholder="Enter password here"
                         />
                     </div>
                 </form>

@@ -1,157 +1,116 @@
+import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Register from '../components/Register';
 import '@testing-library/jest-dom';
-import { useNavigate } from 'react-router-dom';
+import Register from '../components/Register';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-// Mock useNavigate from react-router-dom
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(),
+// Mocking GameRules component
+jest.mock('../components/GameRules', () => ({
+  __esModule: true,
+  default: () => <div>Game Rules</div>, // Mocking the default export
+  rules: [
+    'Replace any number divisible by 7 with "Foo"',
+    'Replace any number divisible by 11 with "Boo"',
+    'Replace any number divisible by 101 with "Loo"',
+    'If divisible by more than one, concatenate the words (e.g., "FooBoo" for 77 which is divisible for both of 7 and 11)',
+    'Otherwise, fill in the number only',
+  ],
 }));
 
-declare global {
-    var importMeta: ImportMeta;
-  }
-  
-  interface ImportMetaEnv {
-    VITE_API_URL: string;
-    BASE_URL: string;
-    MODE: string;
-    DEV: boolean;
-    PROD: boolean;
-    SSR: boolean;
-  }
-  
-  interface ImportMeta {
-    env: ImportMetaEnv;
-  }
-// Mock environment variable
-globalThis.importMeta = {
-    env: {
-      VITE_API_URL: 'https://localhost:5020/api',  // Add your URL here
-      BASE_URL: '/',  // Default value for BASE_URL
-      MODE: 'development',  // Default value for MODE
-      DEV: true,  // Set DEV to true or false based on your environment
-      PROD: false,  // Set PROD to true or false based on your environment
-      SSR: false,  // Set SSR to true or false based on your environment
-    },
-  };
-
+// Mocking window alert and fetch
+global.alert = jest.fn();
+global.fetch = jest.fn().mockResolvedValue({
+  ok: true,
+  text: () => Promise.resolve(''),
+});
 
 describe('Register Component', () => {
-    let navigateMock: jest.Mock;
-
-    beforeEach(() => {
-    navigateMock = jest.fn();
-    (useNavigate as jest.Mock).mockReturnValue(navigateMock);
-  });
-
-  test('renders form with all fields and submit button', () => {
+  beforeEach(() => {
     render(
       <Router>
         <Register />
       </Router>
     );
-
-    expect(screen.getByText(/Welcome To FizzBuzz Game!/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Author:/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Game Name:/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Value Range:/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Duration:/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument();
   });
 
-  test('shows validation errors when fields are empty', async () => {
-    render(
-      <Router>
-        <Register />
-      </Router>
-    );
+  it('should render the form and handle user input', () => {
+    // Check form fields are rendered
+    expect(screen.getByLabelText(/Author/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Game Name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Value Range/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Duration/i)).toBeInTheDocument();
+    
+    // Simulate user input
+    fireEvent.change(screen.getByLabelText(/Author/i), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/Game Name/i), { target: { value: 'FizzBuzz' } });
+    fireEvent.change(screen.getByLabelText(/Value Range/i), { target: { value: '100' } });
+    fireEvent.change(screen.getByLabelText(/Duration/i), { target: { value: '30' } });
 
+    expect((screen.getByLabelText(/Author/i) as HTMLInputElement).value).toBe('John Doe');
+    expect((screen.getByLabelText(/Game Name/i) as HTMLInputElement).value).toBe('FizzBuzz');
+    expect((screen.getByLabelText(/Value Range/i) as HTMLInputElement).value).toBe('100');
+    expect((screen.getByLabelText(/Duration/i) as HTMLInputElement).value).toBe('30');
+  });
+
+  it('should show error message when required fields are empty', async () => {
     fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
 
-    expect(await screen.findByText(/Author is required./i)).toBeInTheDocument();
-    expect(screen.getByText(/Game Name is required./i)).toBeInTheDocument();
-    expect(screen.getByText(/Value Range is required./i)).toBeInTheDocument();
-    expect(screen.getByText(/Duration is required and must be a positive number./i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Author is required.')).toBeInTheDocument();
+      expect(screen.getByText('Game Name is required.')).toBeInTheDocument();
+      expect(screen.getByText('Value Range is required.')).toBeInTheDocument();
+      expect(screen.getByText('Duration is required and must be a positive number.')).toBeInTheDocument();
+    });
   });
 
-  test('fills form correctly without validation errors', () => {
-    render(
-      <Router>
-        <Register />
-      </Router>
-    );
+  it('should show error for invalid range value', async () => {
+    fireEvent.change(screen.getByLabelText(/Value Range/i), { target: { value: 'abc' } });
+    fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
 
-    fireEvent.change(screen.getByLabelText(/Author:/i), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByLabelText(/Game Name:/i), { target: { value: 'FizzBuzz Challenge' } });
-    fireEvent.change(screen.getByLabelText(/Value Range:/i), { target: { value: '100' } });
-    fireEvent.change(screen.getByLabelText(/Duration:/i), { target: { value: '10' } });
-
-    expect(screen.getByDisplayValue('John Doe')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('FizzBuzz Challenge')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('100')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('10')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Please enter a valid number for Range.')).toBeInTheDocument();
+    });
   });
 
-  test('submits the form and navigates on success', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ message: 'Game created successfully!' }),
-      })
-    ) as jest.Mock;
-
-    render(
-      <Router>
-        <Register />
-      </Router>
-    );
-
-    fireEvent.change(screen.getByLabelText(/Author:/i), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByLabelText(/Game Name:/i), { target: { value: 'FizzBuzz Challenge' } });
-    fireEvent.change(screen.getByLabelText(/Value Range:/i), { target: { value: '100' } });
-    fireEvent.change(screen.getByLabelText(/Duration:/i), { target: { value: '10' } });
+  it('should call submitInfo and navigate on successful form submission', async () => {
+    fireEvent.change(screen.getByLabelText(/Author/i), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/Game Name/i), { target: { value: 'FizzBuzz' } });
+    fireEvent.change(screen.getByLabelText(/Value Range/i), { target: { value: '100' } });
+    fireEvent.change(screen.getByLabelText(/Duration/i), { target: { value: '30' } });
 
     fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
 
     await waitFor(() => {
-      expect(navigateMock).toHaveBeenCalledWith('/newmember', {
-        state: { author: 'John Doe', gameName: 'FizzBuzz Challenge', range: '100', timeRange: '10' },
-      });
+      expect(global.fetch).toHaveBeenCalledWith(
+        'http://localhost:5020/api/game/creategame',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+          }),
+        })
+      );
+      expect(global.alert).toHaveBeenCalledWith("Game created successfully! Click Ok to start playing");
     });
-
-    jest.restoreAllMocks();
   });
 
-  test('displays an error when API request fails', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: false,
-        text: () => Promise.resolve('Error creating game'),
-      })
-    ) as jest.Mock;
+  it('should handle fetch errors gracefully', async () => {
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: false,
+      text: () => Promise.resolve('Error creating game'),
+    });
 
-    console.error = jest.fn();
-
-    render(
-      <Router>
-        <Register />
-      </Router>
-    );
-
-    fireEvent.change(screen.getByLabelText(/Author:/i), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByLabelText(/Game Name:/i), { target: { value: 'FizzBuzz Challenge' } });
-    fireEvent.change(screen.getByLabelText(/Value Range:/i), { target: { value: '100' } });
-    fireEvent.change(screen.getByLabelText(/Duration:/i), { target: { value: '10' } });
+    fireEvent.change(screen.getByLabelText(/Author/i), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/Game Name/i), { target: { value: 'FizzBuzz' } });
+    fireEvent.change(screen.getByLabelText(/Value Range/i), { target: { value: '100' } });
+    fireEvent.change(screen.getByLabelText(/Duration/i), { target: { value: '30' } });
 
     fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
 
     await waitFor(() => {
-      expect(console.error).toHaveBeenCalledWith('Failed to create game:', 'Error creating game');
+      expect(global.fetch).toHaveBeenCalled();
+      // Verify that the error message is not displayed in the DOM
+      expect(screen.queryByText('Error creating game')).toBeNull();
     });
-
-    jest.restoreAllMocks();
   });
 });

@@ -27,7 +27,7 @@ const Member = () => {
         setIsLoading(true);
         setError(null); // Clear any previous error messages
         try {
-            const response = await fetch(`${apiUrl}game/getallgames?author=${author}`);
+            const response = await fetch(`${apiUrl}/game/getallgames?author=${author}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch games');
             }
